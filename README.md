@@ -11,6 +11,5 @@ Chapter 1: Assert Yourself of Part 1: Foundations
 * Clone this [repo](https://github.com/qfarenwald/AssertYourself)
 * Unit Tests can be found in `AssertYourselfTests` 
 * Open `AssertYourselfTests.swift` 
-    * No need to `pod install` as the pods are already included
-* Build run tests on an iOS >= 13 device
+* Run tests 
 
