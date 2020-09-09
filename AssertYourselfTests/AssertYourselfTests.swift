@@ -10,68 +10,92 @@ import XCTest
 @testable import AssertYourself
 
 class AssertYourselfTests: XCTestCase {
-    
     func test_fail() {
-        let theAnswer: Int = 42
-        XCTFail("The answer is \(42)!")
+        XCTFail()
     }
-    
-    func test_useConditional() {
+
+    func test_fail_withSimpleMessage() {
+        XCTFail("We have a problem")
+    }
+
+    func test_fail_withInterpolatedMessage() {
+        let theAnswer = 42
+        XCTFail("The Answer to the Great Question is \(theAnswer)")
+    }
+
+    func test_avoidConditionalCode() {
         let success = false
         if !success {
-            XCTFail("Success is \(success)")
+            XCTFail()
         }
     }
-    
-    func test_avoidConditional() {
-        let success = true
+
+    func test_assertTrue() {
+        let success = false
         XCTAssertTrue(success)
     }
-    
+
+    func test_assertFalse() {
+        let success = true
+        XCTAssertFalse(success)
+    }
+
+    func test_assertNotNil() {
+        let optionalValue: Int? = nil
+        XCTAssertNotNil(optionalValue)
+    }
+
     func test_assertNil() {
         let optionalValue: Int? = 123
         XCTAssertNil(optionalValue)
     }
-    
+
     struct SimpleStruct {
         let x: Int
         let y: Int
     }
-    
-    func test_assertNil_SimpleStruct() {
-        let testThing: SimpleStruct = SimpleStruct(x: 1, y: 2)
-        XCTAssertNil(testThing)
+
+    func test_assertNil_withSimpleStruct() {
+        let optionalValue: SimpleStruct? = SimpleStruct(x: 1, y: 2)
+        XCTAssertNil(optionalValue)
     }
-    
-    struct DescriptStruct: CustomStringConvertible {
+
+    struct StructWithDescription: CustomStringConvertible {
         let x: Int
         let y: Int
-        
-        var description: String { "YIKES \(x), \(y)" }
+
+        var description: String { "(\(x), \(y))" }
     }
-    
-    func test_assertNil_DescriptStruct() {
-        let testThing: DescriptStruct = DescriptStruct(x: 3, y: 4)
-        XCTAssertNil(testThing)
+
+    func test_assertNil_withSelfDescribingType() {
+        let optionalValue: StructWithDescription? =
+                StructWithDescription(x: 1, y: 2)
+        XCTAssertNil(optionalValue)
     }
-    
+
     func test_assertEqual() {
-        let testThing = "testThing"
-        XCTAssertEqual(testThing, "checkingTestThingAgainst")
+        let actual = "actual"
+        XCTAssertEqual(actual, "expected")
     }
-    
-    func test_assertEqualWithOptional() {
-        let testThing: String? = "testThing"
-        XCTAssertEqual(testThing, "checkingTestThingAgainst")
+
+    func test_assertEqual_withOptional() {
+        let result: String? = "foo"
+        XCTAssertEqual(result, "bar")
     }
-    
+
+    func test_messageOverkill() {
+        let actual = "actual"
+        XCTAssertEqual(actual, "expected",
+                       "Expected \"expected\" but got \"\(actual)\"")
+    }
+
     func test_floatingPointDanger() {
         let result = 0.1 + 0.2
         XCTAssertEqual(result, 0.3)
     }
-    
-    func test_floatingPointAccuracyCheck() {
-        let testThing = 0.1 + 0.2
-        XCTAssertEqual(testThing, 0.3, accuracy: 0.0001)
+
+    func test_floatingPointFixed() {
+        let result = 0.1 + 0.2
+        XCTAssertEqual(result, 0.3, accuracy: 0.0001)
     }
 }
